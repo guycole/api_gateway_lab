@@ -12,6 +12,8 @@ $json = file_get_contents('php://input');
 fwrite($outfile, $json);
 fwrite($outfile, "---- json ----\n");
 
+fwrite($outfile, "PHP_SELF::".$_SERVER['PHP_SELF']."\n");
+
 $keys1 = array_keys($candidates);
 foreach ($keys1 as $value1) {
 //  echo $value1."\n";
