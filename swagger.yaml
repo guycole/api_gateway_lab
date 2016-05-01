@@ -1,0 +1,57 @@
+swagger: '2.0'
+info:
+  version: '1.0'
+  title: GWPTD
+  description: AWS API Gateway passthrough demonstration
+schemes:
+  - https
+paths:
+  '/demo/{pathArg}':
+    get:
+      description: perform calculation
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: happy happy joy joy
+          schema:
+            $ref: '#/definitions/Empty'
+        '404':
+          description: unknown path arg
+          schema:
+            $ref: '#/definitions/Empty'
+      parameters:
+        - name: pathArg
+          in: path
+          required: true
+          type: string
+        - name: queryArg1
+          in: query
+          required: true
+          type: string
+        - name: queryArg2
+          in: query
+          required: true
+          type: string
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: '200'
+            responseTemplates:
+              application/json: "__passthrough__"
+          '404':
+            statusCode: '404'
+            responseTemplates:
+              application/json: "__passthrough__"
+        requestTemplates:
+          application/json: >-
+            {"operator":"$input.params('pathArg')",
+            "operand1":"$input.params('queryArg1')",
+            "operand2":"$input.params('queryArg2')",
+            "sourceIp":"$context.identity.sourceIp"},
+        httpMethod: POST
+        type: http
+        uri: 'http://52.39.56.135/test/demo.php'
+definitions:
+  Empty:
+    type: object

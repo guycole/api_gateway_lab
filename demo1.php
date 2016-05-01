@@ -7,22 +7,10 @@ $outfile = fopen("/tmp/dump.txt", "w") or die("file open failure");
 
 fwrite($outfile, "---- start ----\n");
 
-fwrite($outfile, "---- json ----1\n");
+fwrite($outfile, "---- json ----\n");
 $json = file_get_contents('php://input');
 fwrite($outfile, $json);
-fwrite($outfile, "---- json ----2\n");
-$datum = json_decode($json, true);
-fwrite($outfile, $datum);
-fwrite($outfile, "---- json ----3\n");
-
-//fwrite($outfile, "PHP_SELF::".$_SERVER['PHP_SELF']."\n");
-
-$keys1 = array_keys($_SERVER);
-//foreach ($keys1 as $value1) {
-//  echo $value1."\n";
-//  var_dump($value1);
-//  fwrite($outfile, "SERVER::".$value1."\n");
-//}
+fwrite($outfile, "---- json ----\n");
 
 $keys1 = array_keys($candidates);
 foreach ($keys1 as $value1) {
@@ -53,17 +41,28 @@ foreach ($keys1 as $value1) {
 fwrite($outfile, "---- stop ----\n");
 fclose($outfile);
 
+$decoded = json_decode($json, true);
+$pathArg = trim($decoded['pathArg']);
+$sourceIp = trim($decoded['sourceIp']);
+
 $datum = Array();
 
-$datum['requestTime'] = 2718;
-$datum['requestAddress'] = 'bbb2';
-$datum['transactionUuid'] = 'ccc2';
+$datum['requestTime'] = time();
+$datum['requestAddress'] = $sourceIp;
+$datum['transactionUuid'] = '6c5790e4-80e9-4ffe-b583-d8f50caafcd3';
 
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: *");
 header("Content-Type: application/json");
 
-$status = 200;
+if ($pathArg == 200) {
+   $status = 200;
+} elseif ($pathArg == 404) {
+   $status = 404;
+} else {
+   $status = 200;
+}
+
 header("HTTP/1.1 ".$status." ".'extra info');
 
 echo json_encode($datum);

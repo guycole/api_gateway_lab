@@ -1,0 +1,98 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0",
+        "title": "GWPTD",
+        "description": "AWS API Gateway passthrough demonstration"
+    },
+    "schemes": [
+        "https"
+    ],
+    "paths": {
+        "/demo/{pathArg}": {
+            "get": {
+                "description": "get with path and query arguments",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "happy happy joy joy",
+                        "schema": {
+                            "$ref": "#/definitions/Response1"
+                        }
+                    },
+                    "404": {
+                        "description": "unknown path arg",
+                        "schema": {
+                            "$ref": "#/definitions/Response1"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "pathArg",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "queryArg1",
+                        "in": "query",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "queryArg2",
+                        "in": "query",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "x-amazon-apigateway-integration": {
+                    "responses": {
+                        "404": {
+                            "statusCode": "404",
+                            "responseTemplates": {
+                                "application/json": "__passthrough__"
+                            }
+                        },
+                        "default": {
+                            "statusCode": "200",
+                            "responseTemplates": {
+                                "application/json": "#set($inputRoot = $input.path('$')) { 'ipAddress' : $inputRoot.requestAddress,   'timeStamp' : $inputRoot.requestTime, 'transactionId' : $inputRoot.transactionUuid }"
+                            }
+                        }
+                    },
+                    "requestTemplates": {
+                        "application/json": "{\"operator\":\"$input.params('pathArg')\", \"operand1\":\"$input.params('queryArg1')\", \"operand2\":\"$input.params('queryArg2')\", \"sourceIp\":\"$context.identity.sourceIp\"},"
+                    },
+                    "httpMethod": "POST",
+                    "type": "http",
+                    "uri": "http://52.39.56.135/api_gw_lab/demo1.php"
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Response1": {
+            "type": "object",
+            "properties": {
+                "ipAddress": {
+                    "description": "remote caller IP address",
+                    "type": "string"
+                },
+                "timeStamp": {
+                    "description": "request time stamp in epoch seconds",
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "transactionId": {
+                    "description": "unique request transaction UUID",
+                    "type": "string",
+                    "format": "uuid"
+                }
+            }
+        }
+    }
+}
