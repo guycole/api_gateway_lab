@@ -18,5 +18,4 @@ This repository contains a [swagger](http://swagger.io) file which creates an AP
   * Push "Select Swagger File"
   * Select `swagger.json` and then 'Import'
   * If successful, you should see something like this:
- ![alt text](https://github.com/guycole/screenshot1.png "Screen Shot 1")
-
+ ![alt text](https://github.com/guycole/api_gateway_lab/blob/master/images/screenshot1.png "Screen Shot 1")
