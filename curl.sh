@@ -1,8 +1,8 @@
 #!/bin/bash
 #
-# Title:ping.sh
+# Title:curl.sh
 #
-# Description:diagnostic test
+# Description:diagnostic driver
 #
 # Development Environment:OS X 10.9.5
 #

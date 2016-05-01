@@ -9,5 +9,6 @@ This repository contains a [swagger](http://swagger.io) file which creates an AP
 
 *  Deploy the PHP script (I use a EC2 instance).
   * Verify the PHP script is working by invoking from a browser or curl(1).
+  * xx
 
 * Next step
