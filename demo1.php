@@ -9,8 +9,17 @@ fwrite($outfile, "---- start ----\n");
 
 fwrite($outfile, "---- json ----\n");
 $json = file_get_contents('php://input');
-fwrite($outfile, $json);
+fwrite($outfile, $json."\n");
 fwrite($outfile, "---- json ----\n");
+
+$decoded = json_decode($json, true);
+$pathArg = trim($decoded['pathArg']);
+$sourceIp = trim($decoded['sourceIp']);
+
+fwrite($outfile, "---- outvar----\n");
+fwrite($outfile, "pathArg::".$pathArg."\n");
+fwrite($outfile, "sourceIp::".$sourceIp."\n");
+fwrite($outfile, "---- outvar----\n");
 
 fwrite($outfile, "PHP_SELF::".$_SERVER['PHP_SELF']."\n");
 
@@ -42,10 +51,6 @@ foreach ($keys1 as $value1) {
 
 fwrite($outfile, "---- stop ----\n");
 fclose($outfile);
-
-$decoded = json_decode($json, true);
-$pathArg = trim($decoded['pathArg']);
-$sourceIp = trim($decoded['sourceIp']);
 
 $datum = Array();
 
