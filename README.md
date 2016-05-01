@@ -5,6 +5,9 @@ Demonstrate features of [AWS API Gateway](https://aws.amazon.com/api-gateway).
 
 This repository contains a [swagger](http://swagger.io) file which creates an API Gateway that interacts w/a simple PHP example.  As a simple passthrough example, we can focus on the different stages/transformations that API Gateway performs.
 
+I learn by working through small examples which exercise important features but are small with minimal dependencies (easy to experiment).  In particular I learned about the interplay between swagger and amazon integration, espcially w/different HTTP status codes.  I also learned about loading a swagger model from the passthrough client, and how to discover the true client IP address (turns out to be delivered via JSON).  Hope you also find it useful.
+
+
 ## Installation
 
 *  Deploy the PHP script [demo1.php] (https://github.com/guycole/api_gateway_lab/blob/master/demo1.php)
