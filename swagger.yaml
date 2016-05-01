@@ -8,18 +8,18 @@ schemes:
 paths:
   '/demo/{pathArg}':
     get:
-      description: perform calculation
+      description: get with path and query arguments 
       produces:
         - application/json
       responses:
         '200':
           description: happy happy joy joy
           schema:
-            $ref: '#/definitions/Empty'
+            $ref: '#/definitions/Response1'
         '404':
           description: unknown path arg
           schema:
-            $ref: '#/definitions/Empty'
+            $ref: '#/definitions/Response1'
       parameters:
         - name: pathArg
           in: path
@@ -38,20 +38,36 @@ paths:
           default:
             statusCode: '200'
             responseTemplates:
-              application/json: "__passthrough__"
+              application/json: 
+                "#set($inputRoot = $input.path('$')) {
+                'ipAddress' : $inputRoot.requestAddress,  
+                'timeStamp' : $inputRoot.requestTime,
+                'transactionId' : $inputRoot.transactionUuid }"
           '404':
             statusCode: '404'
             responseTemplates:
               application/json: "__passthrough__"
         requestTemplates:
           application/json: >-
-            {"operator":"$input.params('pathArg')",
-            "operand1":"$input.params('queryArg1')",
-            "operand2":"$input.params('queryArg2')",
-            "sourceIp":"$context.identity.sourceIp"},
+            {"pathArg":"$input.params('pathArg')",
+            "query1":"$input.params('queryArg1')",
+            "query2":"$input.params('queryArg2')",
+            "sourceIp":"$context.identity.sourceIp"}
         httpMethod: POST
         type: http
-        uri: 'http://52.39.56.135/test/demo.php'
+        uri: 'http://52.39.56.135/api_gw_lab/demo1.php'
 definitions:
-  Empty:
+  Response1:
     type: object
+    properties:
+      ipAddress:
+        description: remote caller IP address
+        type: string
+      timeStamp:
+        description: request time stamp in epoch seconds
+        type: integer
+        format: int64
+      transactionId:
+        description: unique request transaction UUID
+        type: string
+        format: uuid

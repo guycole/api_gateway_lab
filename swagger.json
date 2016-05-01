@@ -65,7 +65,7 @@
                         }
                     },
                     "requestTemplates": {
-                        "application/json": "{\"operator\":\"$input.params('pathArg')\", \"operand1\":\"$input.params('queryArg1')\", \"operand2\":\"$input.params('queryArg2')\", \"sourceIp\":\"$context.identity.sourceIp\"},"
+                        "application/json": "{\"pathArg\":\"$input.params('pathArg')\", \"query1\":\"$input.params('queryArg1')\", \"query2\":\"$input.params('queryArg2')\", \"sourceIp\":\"$context.identity.sourceIp\"}"
                     },
                     "httpMethod": "POST",
                     "type": "http",

@@ -7,15 +7,33 @@ This repository contains a [swagger](http://swagger.io) file which creates an AP
 
 ## Installation
 
-*  Deploy the PHP script [demo1.php](https://github.com/guycole/api_gateway_lab/blob/master/demo1.php)
+*  Deploy the PHP script [demo1.php] (https://github.com/guycole/api_gateway_lab/blob/master/demo1.php)
   * Verify the PHP script is working by invoking from a browser or curl(1).
   * [curl.sh](https://github.com/guycole/api_gateway_lab/blob/master/curl.sh) is an example
-  * Note that demo1.php writes `/tmp/dump.txt` which helps discover runtime state
+  * Note that [demo1.php] (https://github.com/guycole/api_gateway_lab/blob/master/demo1.php) writes `/tmp/dump.txt` to discover runtime state.
 
 *  Create an API Gateway using [swagger.json](https://github.com/guycole/api_gateway_lab/blob/master/swagger.json)
+  * Update the URI for demo1.php (within swagger.json)
   * Using AWS console, navigate to Amazon API Gateway/Create new API
   * Select "Import from Swagger"
   * Push "Select Swagger File"
   * Select `swagger.json` and then 'Import'
   * If successful, you should see something like this:
  ![alt text](https://github.com/guycole/api_gateway_lab/blob/master/images/screenshot1.png "Screen Shot 1")
+  * Select "GET" and press "TEST", supply the path and query arguments when prompted.
+ ![alt text](https://github.com/guycole/api_gateway_lab/blob/master/images/screenshot2.png "Screen Shot 2")
+  * Scroll to see test results.  Should end w/a 200 status
+  * Inspect `/tmp/dump.txt` (note that path/query arguments are converted to a JSON post)
+
+*  Deploy API Gateway
+  * From AWS console, press "Actions" button and select "Deploy API"
+  * If successful, you should see something like this:
+  * "Deploy API" values not critical, I picked "New Stage", "test", "test", "test" and press "Deploy"
+ ![alt text](https://github.com/guycole/api_gateway_lab/blob/master/images/screenshot3.png "Screen Shot 3")
+
+*  Test API Gateway using curl(1)
+  * Cut/paste the URL supplied from deployment into [curl.sh](https://github.com/guycole/api_gateway_lab/blob/master/curl.sh) 
+  * Invoke, should return a 200 status
+
+*  Provoke a 404 status by placing 404 at the end of URL
+  * i.e. `curl -v https://y2pb2sdt6d.execute-api.us-west-2.amazonaws.com/test/demo/404`
