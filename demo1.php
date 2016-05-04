@@ -8,11 +8,15 @@ $outfile = fopen("/tmp/dump.txt", "w") or die("file open failure");
 fwrite($outfile, "---- start ----\n");
 
 fwrite($outfile, "---- json ----\n");
-$json = file_get_contents('php://input');
-fwrite($outfile, $json."\n");
+$rawJson = file_get_contents('php://input');
+#$rawJson = '{"pathArg":"aaa", "query1":"ccc", "query2":"bbb", "sourceIp":"test-invoke-source-ip"}';
+#$rawJson = '{"pathArg":"aaa", "query1":"ccc", "query2":"bbb", "sourceIp":"test-invoke-source-ip"}';
+
+fwrite($outfile, $rawJson."\n");
 fwrite($outfile, "---- json ----\n");
 
-$decoded = json_decode($json, true);
+$decoded = json_decode($rawJson, true);
+//var_dump($decoded);
 $pathArg = trim($decoded['pathArg']);
 $sourceIp = trim($decoded['sourceIp']);
 
@@ -58,9 +62,9 @@ $datum['requestTime'] = time();
 $datum['requestAddress'] = $sourceIp;
 $datum['transactionUuid'] = '6c5790e4-80e9-4ffe-b583-d8f50caafcd3';
 
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: *");
-header("Content-Type: application/json");
+//header("Access-Control-Allow-Origin: *");
+//header("Access-Control-Allow-Methods: *");
+//header("Content-Type: application/json");
 
 if ($pathArg == 200) {
    $status = 200;
